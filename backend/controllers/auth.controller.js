@@ -40,6 +40,7 @@ export const signUp = async (req, res) => {
             username
         })
 
+
         await user.save()
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" })
@@ -67,11 +68,53 @@ export const signUp = async (req, res) => {
     }
 }
 
-export const login = (req, res) => {
+export const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        if (!username || username.trim() === "" || !password || password.trim() === "") {
+            return res.status(400).json({ message: "Por favor, preencha todos os campos" });
+        }
 
+        // Check if user exists
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ message: "Usuário ou senha inválida" });
+        }
+
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Usuário ou senha inválida" });
+        }
+
+
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+        await res.cookie("jwt-linkedin", token, {
+            httpOnly: true,
+            maxAge: 3 * 24 * 60 * 60 * 1000,
+            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production",
+        });
+
+        res.json({ message: "Login feito com sucesso" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Ocorreu um erro, tente novamente mais tarde" });
+    }
 }
 
 
 export const logout = (req, res) => {
+    res.clearCookie("jwt-linkedin")
+    res.json({ message: "Logout feito com sucesso" })
+}
 
+
+export const getCurrentUser = async (req,res) => {
+    try {
+        res.json(req.user)
+    } catch (error) {
+        res.status(500).json({ message: "Ocorreu um erro, tente novamente mais tarde" });
+    }
 }
