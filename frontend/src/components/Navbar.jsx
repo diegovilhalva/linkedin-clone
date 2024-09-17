@@ -88,7 +88,7 @@ const Navbar = () => {
                 onClick={() => logout()}
               >
                 <LogOut size={20} />
-                <span className='hidden md:inline'>Logout</span>
+                <span className='hidden md:inline'>Sair</span>
               </button>
             </>
           ) : (

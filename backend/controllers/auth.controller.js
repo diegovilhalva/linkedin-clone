@@ -75,8 +75,6 @@ export const login = async (req, res) => {
         if (!username || username.trim() === "" || !password || password.trim() === "") {
             return res.status(400).json({ message: "Por favor, preencha todos os campos" });
         }
-
-        // Check if user exists
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({ message: "Usuário ou senha inválida" });
