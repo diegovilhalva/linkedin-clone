@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Layout from "./components/Layout"
 import SignUpPage from "./pages/auth/SignUpPage"
 import LoginPage from "./pages/auth/LoginPage"
@@ -10,7 +10,7 @@ import { axiosInstance } from "./lib/axios"
 
 function App() {
 
-  const {data:authUser} = useQuery({
+  const {data:authUser,isLoading} = useQuery({
     queryKey:["authUser"],
     queryFn:async () => {
       try {
@@ -25,13 +25,15 @@ function App() {
     }
   })
 
-  console.log(authUser)
+  if (isLoading) return null
+
+
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={ authUser ?<HomePage /> : <Navigate to={'/login'}/>} />
+        <Route path="/signup" element={!authUser ?<SignUpPage />: <Navigate to={'/'}/>} />
+        <Route path="/login" element={!authUser ?<LoginPage />:<Navigate to={'/'} />} />
       </Routes>
       <Toaster />
     </Layout>
