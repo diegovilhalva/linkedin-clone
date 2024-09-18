@@ -98,7 +98,7 @@ const Navbar = () => {
               </Link>
               <Link to='/signup' className='btn btn-primary'>
                 Cadastrar
-              </Link>
+              </Link>I
             </>
           )}
         </div>

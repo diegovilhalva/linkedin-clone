@@ -5,7 +5,7 @@ import { sendCommentNotificationEmail } from "../emails/emailHandlers.js";
 export const getFeedPosts = async (req, res) => {
     try {
         const posts = await Post.find({
-            author: { $in: req.user.conections }
+            author: { $in: [...req.user.connections,req.user._id] }
         })
             .populate("author", "name username profilePicture headline")
             .populate("comments.user", "name profilePicture")
@@ -23,7 +23,9 @@ export const getFeedPosts = async (req, res) => {
 export const createPost = async (req, res) => {
     try {
         const { content, image } = req.body
-
+        if(!content && !image){
+            return res.status(400).json({message:"Por favor, preencha os campos para fazer publicação"})
+        }
         let newPost
         if (image) {
             const imgResult = await cloudinary.uploader.upload(image)
