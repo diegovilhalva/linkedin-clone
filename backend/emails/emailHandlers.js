@@ -20,7 +20,7 @@ export const sendWelcomeEmail = async (email, name, profileUrl) => {
 }
 
 export const sendCommentNotificationEmail = async (recipientEmail, recepientName, commenterName, postUrl, commentContent) => {
-    const recipient = [{ email }]
+    const recipient = [{ email:recipientEmail }]
 
     try {
         const response = mailTrapClient.send({
