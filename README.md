@@ -77,8 +77,8 @@ To run this project locally:
    npm run dev
 
    # Start the frontend
-   cd ../client
-   npm start
+   cd ./frontend
+   npm run dev
    ```
 
 6. Open the application at `http://localhost:5173`.
