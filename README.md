@@ -73,7 +73,6 @@ To run this project locally:
 5. Start the development servers:
    ```bash
    # Start the backend
-   cd server
    npm run dev
 
    # Start the frontend
