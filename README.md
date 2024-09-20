@@ -1,5 +1,4 @@
 
-
 # LinkedIn Clone
 
 This is a LinkedIn clone developed using the MERN stack (MongoDB, Express.js, React, Node.js), Tailwind CSS, DaisyUI, Cloudinary for photo storage, and Mailtrap for sending emails.
